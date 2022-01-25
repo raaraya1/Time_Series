@@ -45,8 +45,8 @@ class MA_st():
         plt.plot(df_train['MA'][:split], label='Datos Entrenamiento', color='red')
         plt.plot(df_train['MA'][split:], label='Datos Testeo', color='green')
         plt.legend(loc='best')
-        plt.xlabel('Tiempo')
-        plt.ylabel('Rentabilidad')
+        plt.xlabel('Tiempo (Mes-Año)')
+        plt.ylabel('Valor Promedio Mensual')
 
         c1.plotly_chart(fig)
 
@@ -57,8 +57,20 @@ class MA_st():
         MAE_metric = np.round(self.MAE(y_true, y_test), 3)
         RMSE_metric = np.round(self.RMSE(y_true, y_test), 3)
 
+        # Next Month Prediction
+        NMP = df_test['Close'][int(n_predictions-window):]
+        NMP = np.round(NMP.mean(), 2)
+
+        # Current Month Price
+        CMP = np.round(df_test['Close'][-1], 2)
+
+        # Delta
+        Delta = f'{np.round(((NMP/CMP)-1)*100, 0)} %'
+
         c2.metric(label='MAE', value=MAE_metric)
         c2.metric(label='RMSE', value=RMSE_metric)
+        c2.metric(label='Prediction Price', value=NMP, delta=Delta)
+
 
     def MAE(self, y_true, y_pred):
       return np.mean(np.abs(y_true - y_pred))

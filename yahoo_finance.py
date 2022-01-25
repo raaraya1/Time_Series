@@ -43,15 +43,26 @@ class yf_st:
                 a1.plotly_chart(fig)
 
             # ---------Calculo de rentabilidades------
+            #    -------------- antes ----------------------------
             df = df['Close'].to_frame()
             df['date'] = df.index
             df['Month-Year'] = df['date'].apply(lambda x:pd.Timestamp(x).strftime('%Y-%m'))
-            df = df.groupby(by=['Month-Year']).tail(1).reset_index() #ultimo valor del mes
+
+            # ANTES
+            #df = df.groupby(by=['Month-Year']).tail(1).reset_index() #ultimo valor del mes
+
+            # NUEVO
+            df = df.groupby(by=['Month-Year']).mean().reset_index() # Valor promedio del mes
+
             df['Month-Year'] = pd.to_datetime(df['Month-Year'], infer_datetime_format=True)
             df = df.set_index(['Month-Year'])
             df = df['Close']
 
-            #st.dataframe(df)
+            # NUEVO
+            df_output = df.copy()
+            df_output = df_output.to_frame()
+            #st.dataframe(df_output)
+
 
             # calculo de rentabilidades (y_{t}/y_{t-1})-1
             df_Rt = (df/df.shift())-1
@@ -80,4 +91,8 @@ class yf_st:
             ## Analisis de Series Temporales
             ''')
 
-            return df_plot_Rt['Close']
+            # ANTES
+            #return df_plot_Rt['Close']
+
+            # NUEVO
+            return df_output['Close']

@@ -29,7 +29,7 @@ class ARIMA_st():
 
         c1, c2 = st.columns([6, 2])
 
-        opcion = c2.radio('Parametros', ['Manual', 'Optimizado'], key='EST')
+        opcion = c2.radio('Parametros', ['Manual', 'Optimizado'], key='ARIMA_')
         if opcion == 'Manual':
             p = int(c2.number_input('p', 0, None, value=0))
             d = int(c2.number_input('d', 0, None, value=0))
@@ -68,8 +68,8 @@ class ARIMA_st():
         plt.plot(df_train['ARIMA'][:split], label='Datos Entrenamiento', color='red')
         plt.plot(df_train['ARIMA'][split:], label='Datos Testeo', color='green')
         plt.legend(loc='best')
-        plt.xlabel('Tiempo')
-        plt.ylabel('Rentabilidad')
+        plt.xlabel('Tiempo (Mes-Año)')
+        plt.ylabel('Valor Promedio Mensual')
 
         c1.plotly_chart(fig)
 
@@ -79,8 +79,43 @@ class ARIMA_st():
         MAE_metric = np.round(self.MAE(y_true, y_test), 3)
         RMSE_metric = np.round(self.RMSE(y_true, y_test), 3)
 
+
+        # Next Month Prediction
+        if predict_button:
+            if opcion == 'Manual':
+                m = ARIMA(df_train['Close'].values, order=(p, d, q)).fit()
+                NMP = m.predict(0)[-1]
+            elif opcion == 'Optimizado':
+                m = pm.auto_arima(df_train['Close'].values,
+                                 start_p=1,
+                                 start_q=1,
+                                 test='adf',
+                                 max_p=4,
+                                 max_q=4,
+                                 m=12,
+                                 d=None,
+                                 seasonal=False,
+                                 start_Q=0,
+                                 start_P=0,
+                                 D=0,
+                                 trace=True,
+                                 error_action='ignore',
+                                 suppress_warnings=True,
+                                 stepwise=False)
+                NMP = m.predict(1)[0]
+            NMP = np.round(NMP, 2)
+
+            # Current Month Price
+            CMP = np.round(df_test['Close'][-1], 2)
+
+            # Delta
+            Delta = f'{np.round(((NMP/CMP)-1)*100, 0)} %'
+
+
         c2.metric(label='MAE', value=MAE_metric)
         c2.metric(label='RMSE', value=RMSE_metric)
+        if predict_button: c2.metric(label='Prediction Price', value=NMP, delta=Delta)
+
 
         # ACF
         acf = c1.checkbox('ACF', key='acf_arima')
@@ -136,7 +171,7 @@ class ARIMA_st():
     def RMSE(self, y_true, y_pred):
       return np.sqrt(np.mean((y_true - y_pred)**2))
 
-    @st.cache
+    #@st.cache
     def _pred(self, A, B, C, D=0, E=0, F=0):
 
         n_predictions = len(A['Close'])
@@ -146,9 +181,9 @@ class ARIMA_st():
             # Hacemos la prediccion
             if C == 'Manual':
                 m = ARIMA(B['Close'].values, order=(D, E, F)).fit()
-                B['ARIMA'][-1] = m.forecast(1)
+                B['ARIMA'][-1] = m.predict(0)[-1]
             elif C == 'Optimizado':
-                m = pm.auto_arima(B['Close'].values,
+                m = pm.auto_arima(B['Close'][:-1].values,
                                  start_p=1,
                                  start_q=1,
                                  test='adf',
@@ -164,6 +199,7 @@ class ARIMA_st():
                                  error_action='ignore',
                                  suppress_warnings=True,
                                  stepwise=False)
+                #B['ARIMA'][-1] = m.fit_predict(B['Close'].values, n_periods=1)
                 B['ARIMA'][-1] = m.predict(1)
 
             # Luego agregamos el valor guardado en test

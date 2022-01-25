@@ -40,9 +40,10 @@ class ES_st():
             # agregamos una nueva fila con valores 0 ['Close', 'MA']
             df_train.loc[len(df_train)] = [0, 0]
             # Hacemos la prediccion
-            if opcion == 'Manual': m = SimpleExpSmoothing(df_train['Close']).fit(smoothing_level=smooth_param)
+            if opcion == 'Manual': m = SimpleExpSmoothing(df_train['Close'].values).fit(smoothing_level=smooth_param)
             elif opcion == 'Optimizado': m = SimpleExpSmoothing(df_train['Close'].values).fit(optimized=True)
-            df_train['ES'][-1] = m.forecast(1)
+            #st.write(m.predict(0)[-1])
+            df_train['ES'][-1] = m.predict(0)[-1]
             # Luego agregamos el valor guardado en test
             df_train['Close'][len(df_train['Close'])-1] = df_test['Close'][pred]
 
@@ -54,8 +55,8 @@ class ES_st():
         plt.plot(df_train['ES'][:split], label='Datos Entrenamiento', color='red')
         plt.plot(df_train['ES'][split:], label='Datos Testeo', color='green')
         plt.legend(loc='best')
-        plt.xlabel('Tiempo')
-        plt.ylabel('Rentabilidad')
+        plt.xlabel('Tiempo (Mes-Año)')
+        plt.ylabel('Valor Promedio Mensual')
 
         c1.plotly_chart(fig)
 
@@ -66,8 +67,23 @@ class ES_st():
         MAE_metric = np.round(self.MAE(y_true, y_test), 3)
         RMSE_metric = np.round(self.RMSE(y_true, y_test), 3)
 
+#
+        # Next Month Prediction
+        NMP = m.predict(0)[-1]
+        NMP = np.round(NMP, 2)
+
+        # Current Month Price
+        CMP = np.round(df_test['Close'][-1], 2)
+
+        # Delta
+        Delta = f'{np.round(((NMP/CMP)-1)*100, 0)} %'
+
+#
+
         c2.metric(label='MAE', value=MAE_metric)
         c2.metric(label='RMSE', value=RMSE_metric)
+        c2.metric(label='Prediction Price', value=NMP, delta=Delta)
+
 
     def MAE(self, y_true, y_pred):
       return np.mean(np.abs(y_true - y_pred))
