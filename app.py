@@ -52,10 +52,11 @@ if decision == 'Intro':
 
         - 1) Determinar los pesos ($w_{i}$) **que minimizan la varianza** sujeto a un retorno requerido ($R_{P}^*$)
 
+
           - **F.O.**
 
             $$
-            min \quad var(R_{p})=\sigma_{p}^{2} = \sum_{i=1}^{N}\sum_{j=1}^{N}w_{i}w_{j}\sigma_{i}\sigma_{j}
+            min \quad var(R_{p})=\sigma_{p}^{2} = \sum_{i=1}^{N}\sum_{j=1}^{N}w_{i}w_{j}\sigma_{i}\sigma_{j}\rho_{(i, j)}
             $$
 
           - **S.A.**
@@ -85,7 +86,7 @@ if decision == 'Intro':
           - **S.A.**
 
           $$
-          \sum_{i=1}^{N}\sum_{j=1}^{N}w_{i}w_{j}\sigma_{i}\sigma_{j} \leq \sigma_{p}^{2}
+          \sum_{i=1}^{N}\sum_{j=1}^{N}w_{i}w_{j}\sigma_{i}\sigma_{j}\rho_{(i, j)} \leq \sigma_{p}^{2}
           $$
 
           $$
@@ -95,6 +96,7 @@ if decision == 'Intro':
           $$
           w_{i} \geq 0 \quad \forall i \in (1, ..., N)
           $$
+
 
         ''')
 
