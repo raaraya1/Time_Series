@@ -8,7 +8,7 @@ import numpy as np
 
 class yf_st:
     def menu():
-        ticker_name = st.text_input('Codigo de la accion')
+        ticker_name = st.text_input('Código de la acción')
         if ticker_name != '':
             c1, c2 = st.columns(2)
 

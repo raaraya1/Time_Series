@@ -10,12 +10,11 @@ from ARIMA import ARIMA_st
 
 st.write('# TIME SERIES')
 st.write('''
-        Ahora ultimo, estaba interesado en invertir en la compra de acciones para luego poder
-        manejar otra fuente de ingresos. Asi, mi objetivo en esta ocacion es simular
-        la compra de acciones, para luego replicar las buenas tomas de decisiones
-        en el mundo real.
+        Ahora último, he estado intrigado por como optimizar la toma de decisiones
+        en la compra de acciones. Es por esta razón que mi meta en este trabajo será
+        el de simular la rentabilidad que va adquiriendo un portafolio de acciones en el tiempo.
 
-        Con este objetivo en mente, me gustaria poner en practica un modelo basico
+        Con este objetivo en mente, me gustaría poner en práctica un modelo básico
         de "Portafolio Managment" y, adicionalmente, apoyarme con modelos de series
         temporales para pronosticar el precio de cierre de las acciones.
         ''')
@@ -49,9 +48,9 @@ if decision == 'Intro':
         st.write(r'''
         ## Formulación de un Portafolio Optimo
 
-        Una de las formas de encontrar este conjunto de instrumentos financieros (acciones) de manera eficiente es por medio de un problema de optimizacion donde se considera una formulacion dual:
+        Una de las formas de encontrar este conjunto de instrumentos financieros (acciones) de manera eficiente es por medio de un problema de optimización donde se considera una formulación dual:
 
-        - 1) Determinar los pesos ($w_{i}$) **que minimizan la variannza** sujeto a un retorno requerido ($R_{P}^*$)
+        - 1) Determinar los pesos ($w_{i}$) **que minimizan la varianza** sujeto a un retorno requerido ($R_{P}^*$)
 
           - **F.O.**
 
@@ -75,7 +74,7 @@ if decision == 'Intro':
 
           - Siendo $\bar{R_{i}}$ = Rendimiento esperado del activo $i$
 
-        - 2) Consiste en determinar los pesos ($w_{i}$) que maximizan el retorno esperado ($R_{P}$) sujeto a un maximo riesgo ($R_{p}^{*}$)
+        - 2) Consiste en determinar los pesos ($w_{i}$) que maximizan el retorno esperado ($R_{P}$) sujeto a un máximo riesgo ($R_{p}^{*}$)
 
           - **F.O.**
 
@@ -97,43 +96,43 @@ if decision == 'Intro':
           w_{i} \geq 0 \quad \forall i \in (1, ..., N)
           $$
 
-
         ''')
 
     st.write('''
-            Mirando en detalle el modelo basico de "Portfolio Management", podremos notar
-            que la esperaza de la rentabilidad de la accion, no es otra cosa que el
-            promedio de las rentabilidades en un periodo de tiempo. Es justamente en esta que
-            propongo hacer un cambio y utilizar la prediccion de series temporales para
-            el calculo de la esperanza en la rentabilidad de la accion.
+            Mirando en detalle el modelo básico de "Portfolio Management", podremos notar
+            que la esperanza de la rentabilidad de la acción no es otra cosa que el
+            promedio de las rentabilidades en un periodo de tiempo. Es justamente en esta parte que
+            propongo hacer un cambio y utilizar la predicción de series temporales para
+            el cálculo de la esperanza en la rentabilidad de la acción.
 
-            Para testear esta hipotesis, lo que podemos hacer es seleccionar, de manera
-            aleatoria, un conjunto de empresas y luego realizar el siguiente experimento.
+            Para testear si este cambio genera mayores rentabilidades en el tiempo, lo
+            que podemos hacer es seleccionar, de manera semi aleatoria, un variado conjunto de
+            empresas y luego realizar el siguiente experimento.
 
             - Obtener los datos de los precios de cierre de las empresas (fuente: **Yahoo Finance**)
             - Separar los datos en **train set (80%)** y **test set (20%)**
             - Definir **monto inicial** para invertir
 
 
-            - Para cada periodo de tiempo, se realizan los siguentes calculos segun el modelo.
+            - Para cada periodo de tiempo, se realizan los siguientes cálculos según el modelo.
 
 
-              - **Modelo basico (Portfolio Management)**
+              - **Modelo básico (Portfolio Management)**
                 - Calculo de las rentabilidades de las acciones
                 - Calculo de la esperanza de las acciones por empresa
                   - Promedio de las acciones
-                - Calculo de las desviaciones estandar (riesgo de la accion)
-                - Resolver con Guroby y guardar los resultados
+                - Calculo de las desviaciones estándar (riesgo de la acción)
+                - Resolver con Guroby
 
 
               - **Modelo Adaptado (Portfolio Management + Time Series)**
-                - Calculo de las rentabilidades de las acciones
+                - Extracción de información sobre el precio de las acciones
                 - Definir modelo de series temporal
-                  - Utilizar el train set y escojer el modelo que mejor se ajusta a los datos
+                  - Utilizar el train set y escoger el modelo que mejor se ajusta a los datos
                 - Calculo de la esperanza de las acciones por empresa
                   - [Valor pronosticado (t+1) / valor cierre actual (t)] - 1
-                - Calculo de las desviaciones estandar (riesgo de la accion)
-                - Resolver con Guroby y guardar los resultados
+                - Calculo de las desviaciones estándar (riesgo de la acción)
+                - Resolver con Guroby
 
 
             -  Evaluar para cada periodo de tiempo (test set), la toma de acciones de ambos modelos.

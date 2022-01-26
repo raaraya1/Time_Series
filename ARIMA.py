@@ -29,7 +29,7 @@ class ARIMA_st():
 
         c1, c2 = st.columns([6, 2])
 
-        opcion = c2.radio('Parametros', ['Manual', 'Optimizado'], key='ARIMA_')
+        opcion = c2.radio('Parámetros', ['Manual', 'Optimizado'], key='ARIMA_')
         if opcion == 'Manual':
             p = int(c2.number_input('p', 0, None, value=0))
             d = int(c2.number_input('d', 0, None, value=0))
@@ -125,12 +125,14 @@ class ARIMA_st():
             fig1 = plot_acf(df_acf['Close'].values, fft=1)
             fig1.figsize = (5, 4)
             plt.title('ACF')
-            plt.xlabel('Periodos')
-            plt.ylabel('Autocorrelacion')
+            plt.xlabel('lag')
+            plt.ylabel('acf coefficient')
             c1.pyplot(fig1)
             c2.write('''
             ### Nota:
-            - xxxxxxxxxxxxxxx.
+            - Podemos seleccionar el parámetro $q$ de un modelo $MA(q)$ mirando los
+            puntos significantes del gráfico y corroborando que, luego en el lag $q$, se observe
+            un descenso brusco de los puntos tendiendo a 0.
             ''')
 
         # PACF
@@ -141,12 +143,15 @@ class ARIMA_st():
             fig1 = plot_pacf(df_pacf['Close'].values)
             fig1.figsize = (5, 4)
             plt.title('PACF')
-            plt.xlabel('Periodos')
-            plt.ylabel('Autocorrelacion')
+            plt.xlabel('lag')
+            plt.ylabel('pacf coefficient')
             c1.pyplot(fig1)
             c2.write('''
             ### Nota:
-            - xxxxxxxxxxxxxxxx.
+            - Nosotros podemos ajustar el parámetro $p$ de un modelo $AR(p)$
+            basado en los puntos significantes del gráfico. Un indicador de
+            un modelo $AR$ se observa cuando los puntos en el grafico decaen
+            lentamente.
             ''')
 
         # ndiffs

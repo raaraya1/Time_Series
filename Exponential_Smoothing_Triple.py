@@ -27,7 +27,7 @@ class EST_st():
 
         c1, c2 = st.columns([6, 2])
 
-        opcion = c2.radio('Parametros', ['Manual', 'Optimizado'], key='EST')
+        opcion = c2.radio('Parámetros', ['Manual', 'Optimizado'], key='EST')
         if opcion == 'Manual':
             smooth_level = float(c2.slider('smooth_level', 0.0, 1.0, 0.3, key='slider1_est'))
             smooth_slope = float(c2.slider('smooth_slope', 0.0, 1.0, 0.3, key='slider2_est'))
@@ -101,8 +101,9 @@ class EST_st():
             c2.write('''
             ### Nota:
             - El grafico de Autocorrelaciones Parciales nos puede ayudar a
-            determinar la estacionalidad de la serie, al **observar  cada cuanto se repite
-            un patron en el tiempo**.
+            determinar la estacionalidad de la serie, al **observar cada cuanto se repite
+            un patrón en el tiempo**.
+
             ''')
     def MAE(self, y_true, y_pred):
       return np.mean(np.abs(y_true - y_pred))
