@@ -8,6 +8,7 @@ from Exponential_Smoothing_Double import ESD_st
 from Exponential_Smoothing_Triple import EST_st
 from ARIMA import ARIMA_st
 from portfolio_managment_model import MPT_st
+from scip_model import scip_st
 
 st.write('# TIME SERIES')
 st.write('''
@@ -41,7 +42,7 @@ if decision == 'Time Series Analysis':
 
 if decision == 'Portfolio Management':
     st.write('En Construccion')
-    model = MPT_st()
+    model = scip_st()
     if model.portfolio is not None:
         _ = model.solve()
 
