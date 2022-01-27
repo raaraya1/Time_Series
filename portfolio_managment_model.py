@@ -21,7 +21,7 @@ class MPT_st():
              for i in content[1:-1]: content_fixed.append(i[2:])
              content_fixed.append(content[-1][2:-2])
 
-        self.fix_portfolio = content_fixed
+             self.fix_portfolio = content_fixed
 
 
 
@@ -34,9 +34,6 @@ class MPT_st():
         self.dic_prices = {i: self.R_and_Sigma(i, period)[2] for i in portafolio}
         self.dic_corr = {(i, j):np.corrcoef(self.dic_prices[i], self.dic_prices[j])[0][1] for i in portafolio for j in portafolio}
 
-        st.write(str(self.dic_rent_sigma))
-        st.write(str(self.dic_prices))
-        st.write(str(self.dic_corr))
 
         # Modelo
         m = Model()
