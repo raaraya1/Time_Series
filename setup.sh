@@ -16,6 +16,6 @@ tar xvzf scipoptsuite-7.0.2.tgz
 cd scipoptsuite-7.0.2
 
 apt-get install make
-make
+make install
 
 make gcg
