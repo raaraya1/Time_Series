@@ -14,5 +14,4 @@ mkdir build                                                                   # 
 cd build                                                                      # change directories
 cmake .. -DCMAKE_INSTALL_PREFIX=<streamlit> [-DSOPLEX_DIR=/path/to/soplex]  # configure the build
 make                                                                          # start compiling SCIP
-make check                                                                    # (recommended) check build
-make install                                                                  # (optional) install SCIP executable, library, and headers
+make install GMP=false READLINE=false ZIMPL=false ZLIB=false                                                                  # (optional) install SCIP executable, library, and headers
