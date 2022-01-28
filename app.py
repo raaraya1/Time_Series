@@ -10,6 +10,10 @@ from ARIMA import ARIMA_st
 from portfolio_managment_model import MPT_st
 from scip_model import scip_st
 
+import os
+cmd_string = "sh setup.sh"
+cmd_out_info = os.system(cmd_string)
+
 st.write('# TIME SERIES')
 st.write('''
         Ahora último, he estado intrigado por como optimizar la toma de decisiones
