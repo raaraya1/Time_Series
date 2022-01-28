@@ -8,3 +8,4 @@ pmdarima==1.8.4
 urllib3==1.25.11
 plotly==5.3.1
 gurobipy==9.1.2
+pyscipopt=3.1.5
